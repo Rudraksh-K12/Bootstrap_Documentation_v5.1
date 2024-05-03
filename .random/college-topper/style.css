@@ -1,0 +1,23 @@
+/* Custom CSS */
+body {
+    font-family: Arial, sans-serif;
+  }
+  .top-nav {
+    background-color: #007bff;
+    color: #fff;
+  }
+  .top-nav .navbar-brand {
+    font-weight: bold;
+  }
+  .top-nav .nav-link {
+    color: #fff !important;
+  }
+  .container {
+    margin-top: 20px;
+  }
+  .card {
+    margin-bottom: 20px;
+  }
+  .result{
+    margin: 20px;
+  }

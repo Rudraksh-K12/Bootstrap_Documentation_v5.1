@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table{
+        margin: 20px;
+    }
+    tr{
+        border: 2px solid black;
+    }
+
+    td{
+        border: 2px solid black;
+        padding: 20px;
+    }
+</style>
+
+<body>
+    <input type="text" placeholder="3#3#3" id="one">
+
+    <input type="text" placeholder="3#3#3" id="two">
+
+    <button id="btn">generate tables</button>
+
+    <div id="content" style="display: flex;justify-content: center;gap: 80px;width: 100%;"></div>
+    <script>
+        const content = document.getElementById('content')
+        document.getElementById('btn').addEventListener('click',function generateTables(){
+            content.innerHTML = ""
+         
+            let one = document.getElementById('one').value
+            let two = document.getElementById('two').value
+            const firstVals = one.split('#')
+            let r1 = parseInt(firstVals[0])
+            let c1 = parseInt(firstVals[1])
+            let s1 = parseInt(firstVals[2])
+
+            const secondVals = two.split('#')
+            let r2 = parseInt(secondVals[0])
+            let c2 = parseInt(secondVals[1])
+            let s2 = parseInt(secondVals[2])
+
+            let t1 = document.createElement('table')
+            let ca1 = document.createElement('caption')
+            t1.appendChild(ca1)
+            ca1.innerHTML = "<h1>Table1</h1>"
+            for(let i=0; i<r1; i++){
+                let tr = document.createElement('tr')
+                for(let j=1; j<=c1; j++){
+                    let td = document.createElement('td')
+                    td.innerHTML = `<h3>${(s1+i)*j}</h3>`
+                    tr.appendChild(td)
+                }
+                t1.appendChild(tr)
+            }
+            content.appendChild(t1)
+
+
+            let t2 = document.createElement('table')
+            let ca2 = document.createElement('caption')
+            t2.appendChild(ca2)
+            ca2.innerHTML = "<h1>Table2</h1>"
+            for(let i=0; i<r2; i++){
+                let tr = document.createElement('tr')
+                for(let j=1; j<=c2; j++){
+                    let td = document.createElement('td')
+                    td.innerHTML = `<h3>${(s2+i)*j}</h3>`
+                    tr.appendChild(td)
+                }
+                t2.appendChild(tr)
+            }
+            content.appendChild(t2)
+
+            if(r1 === r2 && c1 === c2){
+                let t3 = document.createElement('table')
+                let ca3 = document.createElement('caption')
+                t3.appendChild(ca3  )
+                ca3.innerHTML = "<h1>Table3</h1>"
+                for(let i=0; i<r1; i++){
+                    let tr = document.createElement('tr')
+                    for(let j=1; j<=c1; j++){
+                        let td = document.createElement('td')
+                        if((s1+i)*j === (s2+i)*j){
+                            td.style.backgroundColor = `rgba(${Math.random() * 256},${Math.random() * 256},${Math.random() * 256},0.8)`;
+                            td.style.padding = "20px";
+                            td.innerHTML = `<h3>${(s1+i)*j}</h3>`;
+                            tr.appendChild(td);
+                        }
+                        else{
+                            td.innerHTML = `<h3>${((s1+i)*j)*(s2+i)*j}</h3>`   
+                        }
+                        tr.appendChild(td)
+                    }
+                    t3.appendChild(tr)
+                }
+                content.appendChild(t3)
+            }
+        })
+    </script>
+</body>
+</html>

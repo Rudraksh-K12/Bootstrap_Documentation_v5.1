@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        thead tr{
+            background-color: rgb(145, 92, 194);
+        }
+        table{
+            padding: 10px;
+        }
+        td{
+            border: 2px solid black;
+            padding: 10px;
+        }
+        tbody tr:hover{
+            background-color: gray;
+        }
+
+        #allstuds{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 50px;
+        }
+
+        #allstuds input{
+            border: 2px solid black;
+            margin: 4px;
+            padding: 10px;
+            width: 40%;
+        }
+
+        #allstuds button{
+            background-color: blue;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 6px;
+
+        }
+    </style>
+</head>
+<body>
+
+    <div class="add">
+        <h1>Add Student Data: </h1>
+        <form action="" id="allstuds">
+            <input type="text" name="Name" placeholder="Enter Name">
+            <input type="text" name="RollNo" placeholder="Enter Roll Number">
+            <input type="text" name="WAD" placeholder="Enter WAD Marks">
+            <input type="text" name="DSBDA" placeholder="Enter DSBDA Marks">
+            <input type="text" name="CNS" placeholder="Enter CNS Marks">
+            <input type="text" name="CC" placeholder="Enter CC Marks">
+            <input type="text" name="AI" placeholder="Enter AI Marks">
+
+            <button type="submit">submit</button>      
+        </form>
+    </div>
+
+    <hr>
+    <div class="display">
+        <h1>Click on Fetch button to view data of all students</h1>
+        <button onclick="fetchData()">fetch</button>
+        <table  style="width: 100vw;">
+            <thead>
+                <tr>
+                    <td>Sr. </td>
+                    <td>Name</td>
+                    <td>Roll No</td>
+                    <td>WAD</td>
+                    <td>DSBDA</td>
+                    <td>CNS</td>
+                    <td>CC</td>
+                    <td>AI</td>
+                </tr>
+            </thead>
+            <tbody id="allData">
+
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+    <div class="display">
+        <h1>Click on Fetch button to view data of all students having dsbda marks greater than 25</h1>
+        <button onclick="fetchDataDSBDA()">fetch</button>
+        <table  style="width: 100vw;">
+            <thead>
+                <tr>
+                    <td>Sr. </td>
+                    <td>Name</td>
+                    <td>Roll No</td>
+                    <td>WAD</td>
+                    <td>DSBDA</td>
+                    <td>CNS</td>
+                    <td>CC</td>
+                    <td>AI</td>
+                </tr>
+            </thead>
+            <tbody id="allDataDSBDA">
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('allstuds').addEventListener('submit',async (e)=>{
+            try{
+                e.preventDefault()
+                const formData = new FormData(e.target)
+                const formDataObj = {}
+                formData.forEach((value,key)=>{
+                    formDataObj[key] = value
+                })
+
+                const response = await fetch('http://localhost:3001/students/addStudentData/',{
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(formDataObj)
+                })
+                if(response.ok){
+                    alert('data added successfully')
+                }
+            }catch(err){
+                console.log(err)
+            }
+
+            
+        })
+
+
+        const fetchData = async ()=>{
+            try{
+                const response = await fetch('http://localhost:3001/students')
+                const data = await response.json()
+                const tble = document.getElementById('allData')
+                tble.innerHTML = " "
+                console.log(data)
+                data.data.map((item,index)=>{
+                    const tr = document.createElement('tr')
+                    const sr = document.createElement('td')
+                    sr.innerHTML = index+1
+
+                    const Name = document.createElement('td')
+                    Name.innerHTML = item.Name
+
+                    const RollNo = document.createElement('td')
+                    RollNo.innerHTML = item.RollNo
+
+                    const WAD = document.createElement('td')
+                    WAD.innerHTML = item.WAD
+
+                    const DSBDA = document.createElement('td')
+                    DSBDA.innerHTML = item.DSBDA
+
+                    const CNS = document.createElement('td')
+                    CNS.innerHTML = item.CNS
+
+                    const CC = document.createElement('td')
+                    CC.innerHTML = item.CC
+
+                    const AI = document.createElement('td')
+                    AI.innerHTML = item.AI
+
+                    tr.appendChild(sr)
+                    tr.appendChild(Name)
+                    tr.appendChild(RollNo)
+                    tr.appendChild(WAD)
+                    tr.appendChild(DSBDA)
+                    tr.appendChild(CNS)
+                    tr.appendChild(CC)
+                    tr.appendChild(AI)
+
+                    tble.append(tr)})
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+
+        const fetchDataDSBDA = async ()=>{
+            try{
+                const response = await fetch('http://localhost:3001/students/dsbda')
+                const data = await response.json()
+                const tble = document.getElementById('allDataDSBDA')
+                tble.innerHTML = " "
+                console.log(data)
+                data.data.map((item,index)=>{
+                    const tr = document.createElement('tr')
+                    const sr = document.createElement('td')
+                    sr.innerHTML = index+1
+
+                    const Name = document.createElement('td')
+                    Name.innerHTML = item.Name
+
+                    const RollNo = document.createElement('td')
+                    RollNo.innerHTML = item.RollNo
+
+                    const WAD = document.createElement('td')
+                    WAD.innerHTML = item.WAD
+
+                    const DSBDA = document.createElement('td')
+                    DSBDA.innerHTML = item.DSBDA
+
+                    const CNS = document.createElement('td')
+                    CNS.innerHTML = item.CNS
+
+                    const CC = document.createElement('td')
+                    CC.innerHTML = item.CC
+
+                    const AI = document.createElement('td')
+                    AI.innerHTML = item.AI
+
+                    tr.appendChild(sr)
+                    tr.appendChild(Name)
+                    tr.appendChild(RollNo)
+                    tr.appendChild(WAD)
+                    tr.appendChild(DSBDA)
+                    tr.appendChild(CNS)
+                    tr.appendChild(CC)
+                    tr.appendChild(AI)
+
+                    tble.append(tr)})
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+    </script>
+</body>
+</html>

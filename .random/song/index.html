@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Song Data</title>
+</head>
+<body>
+    <div>
+        <h1>Add Song Data</h1>
+        <form id="addSongForm">
+            <label for="SongName">Song Name:</label>
+            <input type="text" id="SongName" name="SongName" required><br><br>
+
+            <label for="FilmName">Film Name:</label>
+            <input type="text" id="FilmName" name="FilmName" required><br><br>
+
+            <label for="MusicDirector">Music Director:</label>
+            <input type="text" id="MusicDirector" name="MusicDirector" required><br><br>
+
+            <label for="Singer">Singer:</label>
+            <input type="text" id="Singer" name="Singer" required><br><br>
+
+            <label for="Actor">Actor:</label>
+            <input type="text" id="Actor" name="Actor"><br><br>
+
+            <label for="Actress">Actress:</label>
+            <input type="text" id="Actress" name="Actress"><br><br>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <hr>
+
+    <div class="display">
+        <h1>Fetch Song Data</h1>
+        <button onclick="fetchData()">Fetch All Songs</button>
+
+        <table id="songTable" style="width:100%">
+            <thead>
+                <tr>
+                    <th>index</th>
+                    <th>Song Name</th>
+                    <th>Film Name</th>
+                    <th>Music Director</th>
+                    <th>Singer</th>
+                    <th>Actor</th>
+                    <th>Actress</th>
+                </tr>
+            </thead>
+            <tbody id="allData">
+                <!-- Song data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+    <div class="display">
+        <h1>Click on Fetch button to view data of all songs sung by singer:</h1>
+        <label for="findDir">Singer dir:</label>
+        <input type="text" name="findDir" id="findDir">
+        <button onclick="fetchDataDir()">fetch</button>
+        <table id="songTable" style="width:100%">
+            <thead>
+                <tr>
+                    <th>index</th>
+                    <th>Song Name</th>
+                    <th>Film Name</th>
+                    <th>Music Director</th>
+                    <th>Singer</th>
+                    <th>Actor</th>
+                    <th>Actress</th>
+                </tr>
+            </thead>
+            <tbody id="allDataDir">
+                <!-- Song data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+
+    <script>
+        document.getElementById('addSongForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const formDataObj = {};
+            formData.forEach((value, key) => {
+                formDataObj[key] = value;
+            });
+
+            try {
+                const response = await fetch('http://localhost:8000/songs/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formDataObj)
+                });
+                if (response.ok) {
+                    alert('Song data added successfully');
+                    // You can add further actions here after successful submission
+                } else {
+                    alert('Failed to add song data');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+
+        const fetchData = async () =>{
+            try{
+                const response = await fetch('http://localhost:8000/songs')
+                const data = await response.json()
+                const tble = document.getElementById('allData')
+                tble.innerHTML = " "
+                console.log(data)
+                data.data.map((item, index) => {
+                    const tr = document.createElement('tr');
+                    
+                    // Create and populate cells with song data
+                    const sr = document.createElement('td');
+                    sr.innerHTML = index + 1;
+
+                    const songName = document.createElement('td');
+                    songName.innerHTML = item.SongName;
+
+                    const filmName = document.createElement('td');
+                    filmName.innerHTML = item.FilmName;
+
+                    const musicDirector = document.createElement('td');
+                    musicDirector.innerHTML = item.MusicDirector;
+
+                    const singer = document.createElement('td');
+                    singer.innerHTML = item.Singer;
+
+                    const actor = document.createElement('td');
+                    actor.innerHTML = item.Actor;
+
+                    const actress = document.createElement('td');
+                    actress.innerHTML = item.Actress;
+
+                    // Append cells to the row
+                    tr.appendChild(sr);
+                    tr.appendChild(songName);
+                    tr.appendChild(filmName);
+                    tr.appendChild(musicDirector);
+                    tr.appendChild(singer);
+                    tr.appendChild(actor);
+                    tr.appendChild(actress);
+
+                    // Append the row to the table body
+                    tble.appendChild(tr);
+                });
+        }catch(e)
+        {
+            console.log(e)
+        }
+
+        }
+
+
+        const fetchDataDir = async ()=>{
+            const dir = document.getElementById('findDir').value
+            const dirObj= {MusicDirector:dir}
+            try{
+                const response = await fetch('http://localhost:8000/songs/getMusicByDir',{
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(dirObj)
+                })
+                
+                if (response.ok) {
+                    const data = await response.json()
+                    console.log(data)
+                    const tble = document.getElementById('allDataDir')
+                    tble.innerHTML = " "
+                    console.log(data)
+                    data.data.map((item, index) => {
+                        const tr = document.createElement('tr');
+                        
+                        // Create and populate cells with song data
+                        const sr = document.createElement('td');
+                        sr.innerHTML = index + 1;
+
+                        const songName = document.createElement('td');
+                        songName.innerHTML = item.SongName;
+
+                        const filmName = document.createElement('td');
+                        filmName.innerHTML = item.FilmName;
+
+                        const musicDirector = document.createElement('td');
+                        musicDirector.innerHTML = item.MusicDirector;
+
+                        const singer = document.createElement('td');
+                        singer.innerHTML = item.Singer;
+
+                        const actor = document.createElement('td');
+                        actor.innerHTML = item.Actor;
+
+                        const actress = document.createElement('td');
+                        actress.innerHTML = item.Actress;
+
+                        // Append cells to the row
+                        tr.appendChild(sr);
+                        tr.appendChild(songName);
+                        tr.appendChild(filmName);
+                        tr.appendChild(musicDirector);
+                        tr.appendChild(singer);
+                        tr.appendChild(actor);
+                        tr.appendChild(actress);
+
+                        // Append the row to the table body
+                        tble.appendChild(tr);
+                    });
+                } else {
+                    alert('Failed');
+                }
+            }catch(err){
+                console.log(err)
+            }
+        }
+    
+    
+    </script>
+</body>
+</html>

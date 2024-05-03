@@ -1,0 +1,21 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.heading{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgb(212, 212, 208);
+    height: 35vh;
+    text-align: center;
+}
+
+.cont{
+    /* background-color: red; */
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: space-between;
+    /* margin: 5px; */
+    /* max-width: 100vw; */
+}
